@@ -1,13 +1,7 @@
+const http = require("http");
 const { response } = require("express");
 const express = require("express");
 const app = express();
-
-const http = require("http");
-
-// const app = http.createServer((request, response) => {
-//   response.writeHead(200, { "Content-Type": "text/plain" });
-//   response.end("Server created");
-// });
 
 let persons = [
   {
@@ -32,10 +26,6 @@ let persons = [
   },
 ];
 
-// ${date.toUTCString() ${persons.length}
-// const dateNow = Date.now();
-// response.writeHead(200, { "Content-Type": "text/plain" });
-
 app.get("/api/persons", (request, response) => {
   response.json(persons);
 });
@@ -44,7 +34,6 @@ app.get("/api/info", (request, response) => {
     const dateNow = new Date().toISOString();
     response.send(`Phonebook has info for ${persons.length} people / ${dateNow}`);
 });
-
 
 const generateId = () => {
   const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
