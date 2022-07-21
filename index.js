@@ -30,9 +30,15 @@ app.get("/api/persons", (request, response) => {
   response.json(persons);
 });
 
+app.get("/api/person/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find((p) => p.id === id);
+  response.json(person);
+});
+
 app.get("/api/info", (request, response) => {
-    const dateNow = new Date().toISOString();
-    response.send(`Phonebook has info for ${persons.length} people / ${dateNow}`);
+  const dateNow = new Date().toISOString();
+  response.send(`Phonebook has info for ${persons.length} people / ${dateNow}`);
 });
 
 const generateId = () => {
