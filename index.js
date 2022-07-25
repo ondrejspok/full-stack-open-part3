@@ -2,8 +2,7 @@ const http = require("http");
 const { response } = require("express");
 const express = require("express");
 const app = express();
-const bodyParser = require('body-parser');
-
+const bodyParser = require("body-parser");
 
 let persons = [
   {
@@ -58,13 +57,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post("/api/persons", (request, response) => {
-  console.log(request.body)
+  console.log(request.body);
   const body = request.body;
-  console.log(request.headers)
+  console.log(request.headers);
 
   if (!body.name) {
     return response.status(400).json({
       error: "name missing",
+    });
+  }
+
+  if (!body.number) {
+    return response.status(400).json({
+      error: "number missing",
+    });
+  }
+
+  if(persons.some((person) => person.name === body.name) === true) {
+    return response.status(400).json({
+      error: "name must be unique",
     });
   }
 
