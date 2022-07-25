@@ -2,6 +2,8 @@ const http = require("http");
 const { response } = require("express");
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
+
 
 let persons = [
   {
@@ -41,29 +43,34 @@ app.get("/api/info", (request, response) => {
   response.send(`Phonebook has info for ${persons.length} people / ${dateNow}`);
 });
 
-app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-    response.status(204).end()
-  })
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  persons = persons.filter((person) => person.id !== id);
+  response.status(204).end();
+});
 
 const generateId = () => {
-  const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
+  const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
   return maxId + 1;
 };
 
-app.post("/api/persons", (request, response) => {
-  const body = request.body;
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-  if (!body.content) {
+app.post("/api/persons", (request, response) => {
+  console.log(request.body)
+  const body = request.body;
+  console.log(request.headers)
+
+  if (!body.name) {
     return response.status(400).json({
-      error: "content missing",
+      error: "name missing",
     });
   }
 
   const person = {
-    content: body.content,
-
+    name: body.name,
+    number: body.number,
     date: new Date(),
     id: generateId(),
   };
