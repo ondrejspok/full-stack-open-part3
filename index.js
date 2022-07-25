@@ -28,7 +28,8 @@ let persons = [
   },
 ];
 
-app.use(morgan('tiny'))
+morgan.token('post',(req,res) => JSON.stringify(req.body))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post'))
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
