@@ -4,9 +4,9 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const cors = require('cors')
+const cors = require("cors");
 
-app.use(cors())
+app.use(cors());
 
 let persons = [
   {
@@ -31,8 +31,10 @@ let persons = [
   },
 ];
 
-morgan.token('post',(req,res) => JSON.stringify(req.body))
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post'))
+morgan.token("post", (req, res) => JSON.stringify(req.body));
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms :post")
+);
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
@@ -80,7 +82,7 @@ app.post("/api/persons", (request, response) => {
     });
   }
 
-  if(persons.some((person) => person.name === body.name) === true) {
+  if (persons.some((person) => person.name === body.name) === true) {
     return response.status(400).json({
       error: "name must be unique",
     });
@@ -98,12 +100,12 @@ app.post("/api/persons", (request, response) => {
   response.json(person);
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT);
 console.log(`Server runnng on port ${PORT}`);
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
-app.use(unknownEndpoint)
+app.use(unknownEndpoint);
